@@ -1,0 +1,191 @@
+package NuevoClase18;
+
+import java.util.Arrays;
+
+public class DesafioProgramacionEstructurada {
+    public static void main(String[] args)  {
+        int[] notasCargadas = new int[5];
+        
+        notasCargadas[0] = 80;
+        notasCargadas[1] = 55;
+        notasCargadas[2] = 90;
+
+        // calculamos nota4
+        if (notasCargadas[1] < 60 ){
+            notasCargadas[3] = 100;
+        } else {
+            notasCargadas[3] = notasCargadas[1];
+        }
+
+        //calculamos nota5
+        if (notasCargadas[0] + notasCargadas[2] > 150) {
+            notasCargadas[4] = 95;
+        } else {
+            notasCargadas[4] = 70;
+        }
+
+        
+        mostrarArray(notasCargadas);
+        System.out.println();
+        verificarAprobacion(notasCargadas);
+        System.out.println();
+        mayorVariacion(notasCargadas);
+        System.out.println();
+        verificarProgresivo(notasCargadas);
+        System.out.println();
+        ordenarNotas(notasCargadas);
+        System.out.println();
+        evaluacionFinal(notasCargadas);
+        System.out.println();
+        rankingAlumnos();
+        System.out.println();
+
+        
+        
+    }
+
+    // 1- método para mostrar el array
+    static void mostrarArray(int[] arr) {
+        for (int i = 0 ; i < 5 ; i++) {
+            System.out.println(arr[i]);
+        }
+        System.out.println();
+    }
+
+    // 2- método para veririfcar la cantidad de notas aprobadas
+    static void verificarAprobacion(int[] notas) {
+        int aprobadas = 0;
+        for (int i = 0 ; i < 5 ; i++) {
+            if (notas[i] >= 60) aprobadas++;
+        }
+
+        if (aprobadas == notas.length) {
+            System.out.println("Resultado: Aprobaste todas. ¡Backend Sensei!");
+        } else if (aprobadas == 0) {
+            System.out.println("Resultado: No aprobaste ninguna. ¡Sos un clon de frontend!");
+        } else {
+            System.out.println("Resultado: Algunas aprobadas. Sos un refactor en progreso.");
+        }
+    }
+        // 3- método para mostrar la variación mayor
+    static void mayorVariacion(int[] notas) {
+        int mayorSalto = 0;
+        int prueba = 0;
+
+        for(int i = 0 ; i < notas.length -1 ; i++){
+            int salto = notas[i+1] + notas[i];
+            if (salto > mayorSalto){
+                mayorSalto = salto;
+                prueba = i + 1;
+            }
+        }
+            System.out.println("Mayor salto fue de " + mayorSalto +
+                " puntos entre la prueba " + prueba + " y la prueba " + (prueba + 1) + ".");
+    }
+    
+    // 4- método para verificar el progreso
+    static void verificarProgresivo(int[] notas) {
+        boolean progresivo = true;
+        for (int i = 0; i < notas.length - 1; i++) {
+            if (notas[i + 1] <= notas[i]) {
+                progresivo = false;
+                break;
+            }
+        }
+        if (progresivo) {
+            System.out.println("¡Nivel PROGRESIVO! Sos un Stone Chad en crecimiento 📈");
+        } else{
+            System.out.println("El nivel no fue progresivo, las notas no progresaron respecto de la anterior");
+        }
+    }
+
+    // 5- método para ordenar (usando el método de burbuja)
+    static void ordenarNotas(int[] notas) {
+        int[] copia = Arrays.copyOf(notas, notas.length);
+
+        for (int i = 0; i < copia.length - 1; i++) {
+            for (int j = 0; j < copia.length - 1 - i; j++) {
+                if (copia[j] < copia[j + 1]) {
+                    int temp = copia[j];
+                    copia[j] = copia[j + 1];
+                    copia[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("Notas ordenadas de mayor a menor:");
+        mostrarArray(copia);
+    }
+
+    // 5. Evaluación final por nivel
+    static void evaluacionFinal(int[] notas) {
+        int total = 0;
+        for (int i = 0 ; i < notas.length ; i++ ) total += notas[i];
+        System.out.println(total);
+
+        if (total < 250) {
+            System.out.println("Normie total 😢");
+        } else if (total >= 250 && total < 350) {
+            System.out.println("Soft Chad");
+        } else if (total >= 350 && total < 450) {
+            System.out.println("Chad");
+        } else {
+            System.out.println("Stone Chad definitivo 💪");
+        }
+    }
+
+    // 6. Ranking entre varios alumnos
+    static void rankingAlumnos() {
+        // [alumno][notas]
+        int[][] clase = {
+                {80, 55, 90, 100, 95}, // alumno 1
+                {60, 70, 75, 70, 95},  // alumno 2
+                {100, 90, 85, 90, 95}, // alumno 3
+                {50, 40, 30, 100, 70}  // alumno 4
+        };
+
+        double mejorPromedio = -1;
+        int idxMejor = -1;
+
+        double menorDesvio = Double.MAX_VALUE;
+        int idxRegular = -1;
+
+        int peorTercera = Integer.MAX_VALUE;
+        int idxPeor3 = -1;
+
+        for (int i = 0; i < clase.length; i++) {
+            int suma = 0;
+            int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+
+            for (int nota : clase[i]) {
+                suma += nota;
+                if (nota > max) max = nota;
+                if (nota < min) min = nota;
+            }
+
+            double promedio = suma / 5.0;
+            if (promedio > mejorPromedio) {
+                mejorPromedio = promedio;
+                idxMejor = i;
+            }
+
+            int desviacion = max - min;
+            if (desviacion < menorDesvio) {
+                menorDesvio = desviacion;
+                idxRegular = i;
+            }
+
+            if (clase[i][2] < peorTercera) {
+                peorTercera = clase[i][2];
+                idxPeor3 = i;
+            }
+        }
+
+        System.out.println("\n=== Ranking de la clase ===");
+        System.out.println("Mejor promedio: Alumno " + (idxMejor + 1));
+        System.out.println("Más regular: Alumno " + (idxRegular + 1));
+        System.out.println("Peor en la 3ra prueba: Alumno " + (idxPeor3 + 1));
+    }
+
+
+    }
